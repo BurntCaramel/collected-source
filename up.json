@@ -1,0 +1,7 @@
+{
+  "name": "collected-source",
+  "profile": "default",
+  "regions": [
+    "us-east-2"
+  ]
+}

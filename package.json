@@ -1,0 +1,16 @@
+{
+  "name": "collected-source",
+  "dependencies": {
+    "@octokit/rest": "^14.0.9",
+    "axios": "^0.18.0",
+    "hapi": "^17.2.0"
+  },
+  "devDependencies": {
+    "dotenv": "^5.0.1",
+    "nodemon": "^1.15.1"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  }
+}
