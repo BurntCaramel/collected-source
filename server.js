@@ -37,17 +37,18 @@ server.route([
   // },
   {
     method: 'GET',
-    path: '/components/{owner}/{repo}',
+    path: '/components/{owner}/{repo}/{ref}',
     async handler({
-      params: { owner, repo },
+      params: { owner, repo, ref },
+      query: { path }
     },
       h
     ) {
       const result = await octokit.repos.getContent({
         owner,
         repo,
-        ref: 'master',
-        path: 'components'
+        ref,
+        path
       })
         .catch(error => {
           if (/Not Found/.test(error.message)) {
