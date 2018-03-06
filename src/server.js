@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 const Hapi = require('hapi')
 const axios = require('axios')
 const Boom = require('boom')
-const Content = require('./src/Content')
+const Content = require('./Content')
 
 const server = new Hapi.Server({
   port: process.env.PORT
