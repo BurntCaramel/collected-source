@@ -3,6 +3,7 @@
   "dependencies": {
     "@octokit/rest": "^14.0.9",
     "axios": "^0.18.0",
+    "boom": "^7.2.0",
     "hapi": "^17.2.0"
   },
   "devDependencies": {

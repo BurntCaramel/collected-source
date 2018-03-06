@@ -197,6 +197,12 @@ boom@7.x.x:
   dependencies:
     hoek "5.x.x"
 
+boom@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/boom/-/boom-7.2.0.tgz#2bff24a55565767fde869ec808317eb10c48e966"
+  dependencies:
+    hoek "5.x.x"
+
 bounce@1.x.x:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/bounce/-/bounce-1.2.0.tgz#e3bac68c73fd256e38096551efc09f504873c8c8"

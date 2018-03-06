@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 const Hapi = require('hapi')
 const Octokit = require('@octokit/rest')
 const axios = require('axios')
+const Boom = require('boom')
 
 const octokit = new Octokit()
 octokit.authenticate({
@@ -38,12 +39,22 @@ server.route([
     method: 'GET',
     path: '/components/{owner}/{repo}',
     async handler({ params: { owner, repo } }, h) {
-      const result = await octokit.repos.getContent({
-        owner,
-        repo,
-        ref: 'master',
-        path: 'components'
-      })
+      try {
+        const result = await octokit.repos.getContent({
+          owner,
+          repo,
+          ref: 'master',
+          path: 'components'
+        })
+      }
+      catch (error) {
+        if (/Not Found/.test(error.message)) {
+          throw Boom.notFound()
+        }
+        else {
+          throw error
+        }
+      }
 
       try {
         const itemContents = await Promise.all(
