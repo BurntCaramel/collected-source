@@ -9,5 +9,13 @@
   },
   "proxy": {
     "command": "./node-v8.9.4-linux-x64/bin/node server.js"
+  },
+  "stages": {
+    "staging": {
+      "domain": "staging.1.source.collected.design"
+    },
+    "production": {
+      "domain": "1.source.collected.design"
+    }
   }
 }
