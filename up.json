@@ -8,7 +8,7 @@
     "build": "make"
   },
   "proxy": {
-    "command": "./node-v8.9.4-linux-x64/bin/node server.js"
+    "command": "./node-v8.9.4-linux-x64/bin/node src/server.js"
   },
   "stages": {
     "staging": {
