@@ -29,6 +29,17 @@ server.route([
     ) {
       return Content.listComponents({ owner, repo, ref, path })
     }
+  },
+  {
+    method: 'GET',
+    path: '/downloads/{owner}/{repo}/{ref}',
+    async handler({
+      params: { owner, repo, ref }
+    },
+      h
+    ) {
+      return Content.fetchZip({ owner, repo, ref })
+    }
   }
 ])
 
