@@ -17,5 +17,8 @@
     "production": {
       "domain": "1.source.collected.design"
     }
+  },
+  "error_pages": {
+    "disable": true
   }
 }
