@@ -1,4 +1,5 @@
 const axios = require('axios')
+const Boom = require('boom')
 const Path = require('path')
 const { tmpdir } = require('os')
 const { createWriteStream } = require('fs')
@@ -13,31 +14,31 @@ async function fetchZip({
 }) {
   const zipURL = `https://api.github.com/repos/${owner}/${repo}/zipball/${ref}`
   console.log('zip url ', zipURL)
-  const { data: zipIn } = await axios.get(zipURL, {
+  const { data: zipDownload } = await axios.get(zipURL, {
     responseType: 'stream'
   })
-  zipIn.pause()
+    .catch(error => {
+      throw Boom.boomify(error, { statusCode: error.response.status })
+    })
 
   const fileName = randomBytes(32).toString('hex') + '.zip'
   const writePath = Path.join(tmpdir(), fileName)
-  const zipOut = createWriteStream(writePath)
+  const zipWriteFile = createWriteStream(writePath)
 
-  // zipIn.on('data', (data) => { console.log('data reading', data) })
-  zipIn.on('error', (error) => { console.log('error reading', error) })
-  zipIn.on('end', () => { console.log('end read') })
-  zipOut.on('open', () => { console.log('open write') })
+  const finishWritePromise = Promise.all([
+    new Promise((resolve, reject) => {
+      zipDownload.on('error', reject)
+      zipDownload.on('end', resolve)
+    }),
+    new Promise((resolve, reject) => {
+      zipWriteFile.on('error', reject)
+      zipWriteFile.on('finish', resolve)
+    })
+  ])
 
-  zipIn.pipe(zipOut)
+  zipDownload.pipe(zipWriteFile)
 
-  console.log('begin write zip to ', writePath)
-
-  await new Promise((resolve, reject) => {
-    zipOut.on('error', reject)
-    zipOut.on('data', () => { console.log('wrote data') })
-    zipOut.on('finish', () => { console.log('end finish'); resolve() })
-  })
-
-  console.log('wrote zip to ', writePath)
+  await finishWritePromise
 
   const zip = new AdmZip(writePath)
   return zip.getEntries().map(zipEntry => {
