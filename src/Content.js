@@ -42,11 +42,15 @@ async function fetchZip({
   const zip = new AdmZip(writePath)
   return zip.getEntries().map(zipEntry => {
     const slashIndex = zipEntry.entryName.indexOf('/')
+    const path = zipEntry.entryName.slice(slashIndex + 1)
+    if (path === '') {
+      return
+    }
     return {
-      path: zipEntry.entryName.slice(slashIndex + 1),
+      path,
       isDirectory: zipEntry.isDirectory
     }
-  })
+  }).filter(Boolean)
 }
 
 async function listComponents1({
