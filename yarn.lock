@@ -195,13 +195,7 @@ boom@6.x.x:
   dependencies:
     hoek "5.x.x"
 
-boom@7.x.x:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/boom/-/boom-7.1.1.tgz#50392a4e3417e971f1ad28622c20e832275260bb"
-  dependencies:
-    hoek "5.x.x"
-
-boom@^7.2.0:
+boom@7.x.x, boom@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/boom/-/boom-7.2.0.tgz#2bff24a55565767fde869ec808317eb10c48e966"
   dependencies:
@@ -394,8 +388,8 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
 
 content@4.x.x:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/content/-/content-4.0.3.tgz#2224e0449e4258617bc5f7fb4dc2f17f321d21fc"
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/content/-/content-4.0.4.tgz#2941609c89593ed2e1504d72c9a28e9516f163e0"
   dependencies:
     boom "7.x.x"
 
@@ -737,8 +731,8 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
 hapi@^17.2.0:
-  version "17.2.0"
-  resolved "https://registry.yarnpkg.com/hapi/-/hapi-17.2.0.tgz#e5d74b65235b443225e05d7b7510cdb80d4887e7"
+  version "17.2.2"
+  resolved "https://registry.yarnpkg.com/hapi/-/hapi-17.2.2.tgz#c6c882d698a1a2a2a20e74a0b9f604cf10aac5a5"
   dependencies:
     accept "3.x.x"
     ammo "3.x.x"
