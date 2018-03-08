@@ -27,18 +27,29 @@ server.route([
     },
       h
     ) {
-      return Content.listComponents({ owner, repo, ref, path })
+      return await Content.listComponents({
+        owner,
+        repo,
+        ref,
+        path
+      })
     }
   },
   {
     method: 'GET',
-    path: '/downloads/{owner}/{repo}/{ref}',
+    path: '/github/{owner}/{repo}/{ref}/command:list',
     async handler({
-      params: { owner, repo, ref }
+      params: { owner, repo, ref },
+      query: { content }
     },
       h
     ) {
-      return Content.fetchZip({ owner, repo, ref })
+      return Content.listFiles({
+        owner,
+        repo,
+        ref,
+        includeContent: content != null
+      })
     }
   }
 ])

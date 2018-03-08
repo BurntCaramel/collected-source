@@ -13,7 +13,6 @@ async function fetchZip({
   ref,
 }) {
   const zipURL = `https://api.github.com/repos/${owner}/${repo}/zipball/${ref}`
-  console.log('zip url ', zipURL)
   const { data: zipDownload } = await axios.get(zipURL, {
     responseType: 'stream'
   })
@@ -40,18 +39,41 @@ async function fetchZip({
 
   await finishWritePromise
 
-  const zip = new AdmZip(writePath)
-  return zip.getEntries().map(zipEntry => {
+  return new AdmZip(writePath)
+}
+
+async function listFiles({
+  owner,
+  repo,
+  ref,
+  includeContent = false
+}) {
+  const zip = await fetchZip({ owner, repo, ref })
+  const promises = zip.getEntries().map(async (zipEntry) => {
     const slashIndex = zipEntry.entryName.indexOf('/')
     const path = zipEntry.entryName.slice(slashIndex + 1)
     if (path === '') {
       return
     }
+
+    let content = undefined
+
+    if (includeContent && !zipEntry.isDirectory) {
+      content = await new Promise(resolve => {
+        zipEntry.getDataAsync(resolve)
+      })
+        .then(buffer => buffer.toString('utf8'))
+    }
+
     return {
       path,
-      isDirectory: zipEntry.isDirectory
+      isDirectory: zipEntry.isDirectory,
+      content
     }
-  }).filter(Boolean)
+  })
+
+  return await Promise.all(promises)
+    .then(items => items.filter(Boolean))
 }
 
 async function listComponents1({
@@ -112,5 +134,5 @@ async function listComponents1({
 
 module.exports = {
   listComponents: listComponents1,
-  fetchZip
+  listFiles
 }

@@ -20,10 +20,13 @@ DOWNLOADS
 ###
 
 ###
-http://localhost:9090/downloads/seek-oss/seek-style-guide/master
+http://localhost:9090/github/seek-oss/seek-style-guide/master/command:list
 
 ###
-http://localhost:9090/downloads/RoyalIcing/lofi-bootstrap/master
+http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master/command:list
 
 ###
-http://localhost:9090/downloads/RoyalIcing/lofi-bootstrap/master2
+http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master2/command:list
+
+###
+http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master/command:list?content
