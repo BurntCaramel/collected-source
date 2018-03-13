@@ -30,3 +30,7 @@ http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master2/command:list
 
 ###
 http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master/command:list?content
+
+###
+http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master/command:list?content
+Accept: application/x-ndjson

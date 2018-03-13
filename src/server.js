@@ -4,11 +4,19 @@ if (process.env.NODE_ENV !== 'production') {
 const Hapi = require('hapi')
 const axios = require('axios')
 const Boom = require('boom')
+const Accept = require('accept')
 const Content = require('./Content')
 
 const server = new Hapi.Server({
-  port: process.env.PORT
+  port: process.env.PORT,
+  // compression: { minBytes: 1 }
 })
+
+const ndJSONType = 'application/x-ndjson'
+
+function preAccept(request, h) {
+  return Accept.parseAll(request.headers)
+}
 
 server.route([
   {
@@ -38,18 +46,31 @@ server.route([
   {
     method: 'GET',
     path: '/github/{owner}/{repo}/{ref}/command:list',
+    options: {
+      pre: [
+        [
+          { method: preAccept, assign: 'accept' }
+        ]
+      ],
+    },
     async handler({
       params: { owner, repo, ref },
-      query: { content }
+      query: { content },
+      pre: { accept }
     },
       h
     ) {
-      return Content.listFiles({
-        owner,
-        repo,
-        ref,
-        includeContent: content != null
-      })
+      const isNDJSON = (accept.mediaTypes[0] === ndJSONType)
+      return h.response(
+        await Content.listFiles({
+          owner,
+          repo,
+          ref,
+          includeContent: content != null,
+          streamJSON: isNDJSON
+        })
+      )
+        .type(isNDJSON ? ndJSONType : 'application/json')
     }
   }
 ])

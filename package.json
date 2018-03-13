@@ -2,10 +2,12 @@
   "name": "collected-source",
   "dependencies": {
     "@octokit/rest": "^14.0.9",
+    "accept": "^3.0.2",
     "adm-zip": "^0.4.7",
     "axios": "^0.18.0",
     "boom": "^7.2.0",
-    "hapi": "^17.2.0"
+    "hapi": "^17.2.0",
+    "ndjson": "^1.5.0"
   },
   "devDependencies": {
     "dotenv": "^5.0.1",

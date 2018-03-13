@@ -5,6 +5,8 @@ const { tmpdir } = require('os')
 const { createWriteStream } = require('fs')
 const { randomBytes } = require('crypto')
 const AdmZip = require('adm-zip')
+const NDJSON = require('ndjson')
+const Stream = require('stream')
 const octokit = require('./octokit')
 
 async function fetchZip({
@@ -46,10 +48,13 @@ async function listFiles({
   owner,
   repo,
   ref,
-  includeContent = false
+  includeContent = false,
+  streamJSON = false
 }) {
   const zip = await fetchZip({ owner, repo, ref })
+  console.log('creating promises')
   const promises = zip.getEntries().map(async (zipEntry) => {
+    console.log('processing entry', zipEntry.entryName)
     const slashIndex = zipEntry.entryName.indexOf('/')
     const path = zipEntry.entryName.slice(slashIndex + 1)
     if (path === '') {
@@ -65,6 +70,8 @@ async function listFiles({
         .then(buffer => buffer.toString('utf8'))
     }
 
+    console.log('processed entry', zipEntry.entryName)
+
     return {
       path,
       isDirectory: zipEntry.isDirectory,
@@ -72,8 +79,25 @@ async function listFiles({
     }
   })
 
-  return await Promise.all(promises)
-    .then(items => items.filter(Boolean))
+  if (streamJSON) {
+    const stream = NDJSON.serialize();
+
+    (async () => {
+      for (const promise of promises) {
+        const json = await promise;
+        if (!!json) {
+          stream.write(json);
+        }
+      }
+      stream.end();
+    })();
+
+    return new Stream.Readable().wrap(stream);
+  }
+  else {
+    return await Promise.all(promises)
+      .then(items => items.filter(Boolean))
+  }
 }
 
 async function listComponents1({
