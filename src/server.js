@@ -52,6 +52,7 @@ server.route([
           { method: preAccept, assign: 'accept' }
         ]
       ],
+      cors: true,
     },
     async handler({
       params: { owner, repo, ref },
