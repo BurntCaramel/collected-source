@@ -5,7 +5,7 @@ const Hapi = require('hapi')
 const axios = require('axios')
 const Boom = require('boom')
 const Accept = require('accept')
-const Content = require('./Content')
+const GitHub = require('./contexts/GitHub')
 
 const server = new Hapi.Server({
   port: process.env.PORT,
@@ -28,23 +28,6 @@ server.route([
   },
   {
     method: 'GET',
-    path: '/components/{owner}/{repo}/{ref}',
-    async handler({
-      params: { owner, repo, ref },
-      query: { path = 'components' }
-    },
-      h
-    ) {
-      return await Content.listComponents({
-        owner,
-        repo,
-        ref,
-        path
-      })
-    }
-  },
-  {
-    method: 'GET',
     path: '/github/{owner}/{repo}/{ref}/command:list',
     options: {
       pre: [
@@ -63,7 +46,7 @@ server.route([
     ) {
       const isNDJSON = (accept.mediaTypes[0] === ndJSONType)
       return h.response(
-        await Content.listFiles({
+        await GitHub.listFiles({
           owner,
           repo,
           ref,

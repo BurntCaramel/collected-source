@@ -7,7 +7,7 @@ const { randomBytes } = require('crypto')
 const AdmZip = require('adm-zip')
 const NDJSON = require('ndjson')
 const Stream = require('stream')
-const octokit = require('./octokit')
+const octokit = require('../services/octokit')
 
 async function fetchZip({
   owner,
