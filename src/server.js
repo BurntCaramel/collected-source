@@ -31,13 +31,15 @@ async function start() {
     plugin: graphiqlHapi,
     options: {
       path: '/graphiql',
-      graphiqlOptions: (request) => ({
-        schema: require('./schema'),
-        context: {
-          loaders: require('./loaders')
-        },
-        endpointURL: request.path.replace('graphiql', 'graphql')
-      }),
+      graphiqlOptions: (request) => {
+        return ({
+          schema: require('./schema'),
+          context: {
+            loaders: require('./loaders')
+          },
+          endpointURL: './graphql'
+        })
+      },
       route: {
         cors: true
       }
