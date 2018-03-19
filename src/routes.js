@@ -1,5 +1,6 @@
 const Accept = require('accept')
 const GitHub = require('./contexts/GitHub')
+const Trello = require('./contexts/Trello')
 
 const ndJSONType = 'application/x-ndjson'
 
@@ -44,6 +45,15 @@ const routes = [
         })
       )
         .type(isNDJSON ? ndJSONType : 'application/json')
+    }
+  },
+  {
+    method: 'GET',
+    path: '/trello/{boardID}',
+    async handler({
+      params: { boardID }
+    }, h) {
+      return await Trello.fetchBoard({ boardID })
     }
   }
 ]
