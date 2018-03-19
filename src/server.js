@@ -36,7 +36,7 @@ async function start() {
         context: {
           loaders: require('./loaders')
         },
-        endpointURL: '/graphql'
+        endpointURL: request.path.replace('graphiql', 'graphql')
       }),
       route: {
         cors: true
