@@ -1,25 +1,9 @@
 const { makeExecutableSchema } = require('graphql-tools')
-const GitHub = require('../contexts/GitHub')
+const GitHub = require('./GitHub')
 
-const typeDefs = `
-type GitHubRepo {
-  owner: String!
-  repoName: String!
-  ref: String
-  files: [GitHubFile]
-}
-
-type GitHubFile {
-  path: String!
-  content: String
-}
-
+const baseTypeDefs = `
 type Query {
-  gitHubRepo(
-    owner: String!,
-    repoName: String!,
-    ref: String
-  ): GitHubRepo
+  ${GitHub.rootQueryFields}
 }
 
 schema {
@@ -27,30 +11,22 @@ schema {
 }
 `
 
-const resolvers = {
-  Query: {
-    gitHubRepo(_, { owner, repoName, ref }) {
-      return { owner, repoName, ref: ref || 'master' }
-    }
+const typeDefs = [
+  GitHub.typeDefs,
+  baseTypeDefs
+]
+
+const resolvers = Object.assign(
+  {
+    Query: Object.assign({},
+      GitHub.rootQueryResolvers
+    )
   },
-  GitHubRepo: {
-    async files(
-      { owner, repoName, ref },
-      args,
-      context) {
-      return GitHub.listFiles({
-        owner,
-        repo: repoName,
-        ref,
-        includeContent: true
-      })
-    }
-  },
-  GitHubFile: {}
-}
+  GitHub.resolvers
+)
 
 const schema = makeExecutableSchema({
-  typeDefs: [typeDefs],
+  typeDefs: typeDefs,
   resolvers
 })
 
