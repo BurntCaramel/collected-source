@@ -4,7 +4,7 @@ const Boom = require('boom')
 async function fetchBoard({
   boardID
 }) {
-  const url = `https://trello.com/b/${boardID}.json`
+  const url = `https://api.trello.com/1/boards/${boardID}?lists=all&cards=all`
   const { data } = await axios.get(url)
     .catch(error => {
       throw Boom.boomify(error, { statusCode: error.response.status })

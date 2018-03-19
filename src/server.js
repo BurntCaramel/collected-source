@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const Hapi = require('hapi')
 const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi')
+const DataLoader = require('dataloader')
 
 async function start() {
   const server = new Hapi.Server({
@@ -15,7 +16,10 @@ async function start() {
     options: {
       path: '/graphql',
       graphqlOptions: (request) => ({
-        schema: require('./schema')
+        schema: require('./schema'),
+        context: {
+          loaders: require('./loaders')
+        }
       }),
       route: {
         cors: true
@@ -29,6 +33,9 @@ async function start() {
       path: '/graphiql',
       graphiqlOptions: (request) => ({
         schema: require('./schema'),
+        context: {
+          loaders: require('./loaders')
+        },
         endpointURL: '/graphql'
       }),
       route: {
