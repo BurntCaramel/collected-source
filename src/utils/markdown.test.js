@@ -1,5 +1,5 @@
 const test = require('ava')
-const { listHeadings } = require('./markdown')
+const { listHeadings, listListItems } = require('./markdown')
 
 test('listHeadings()', t => {
   t.deepEqual(
@@ -13,6 +13,23 @@ test('listHeadings()', t => {
 blah blah
 
 ## Secondary
+
+yep yep
+`));
+})
+
+test('listListItems()', t => {
+  t.deepEqual(
+    [
+      { text: 'first' },
+      { text: 'second' }
+    ],
+    listListItems(`
+- first
+
+blah blah
+
+- second
 
 yep yep
 `));
