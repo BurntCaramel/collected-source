@@ -7,7 +7,7 @@ const DataLoader = require('dataloader')
 
 async function start() {
   const server = new Hapi.Server({
-    port: process.env.PORT,
+    port: process.env.PORT || 9090,
     // compression: { minBytes: 1 }
   })
 
@@ -49,6 +49,8 @@ async function start() {
   server.route(require('./routes'))
 
   await server.start()
+
+  console.log('Started server', server.info)
 }
 
 start()
