@@ -1,6 +1,6 @@
 const R = require('ramda')
 
-tagsRegex = /#(\w+)/g
+const tagsRegex = /#(\w+)/g
 
 const listTags = R.pipe(
   R.match(tagsRegex),

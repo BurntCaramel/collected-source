@@ -2,6 +2,7 @@ const { makeExecutableSchema } = require('graphql-tools')
 const R = require('ramda')
 const Trello = require('../contexts/Trello')
 const { hasTag } = require('../utils/tags')
+const { listHeadings } = require('../utils/markdown')
 
 const cardHasTags = R.uncurryN(2, (tags) => (
   R.propSatisfies(
@@ -33,6 +34,12 @@ type TrelloCard {
 
 type StringTransformer {
   text: String
+  headings: [Heading!]
+}
+
+type Heading {
+  text: String
+  level: Int
 }
 `
 
@@ -79,7 +86,12 @@ const resolvers = {
   StringTransformer: {
     text(string) {
       return string
-    }
+    },
+    headings(string) {
+      return listHeadings(string)
+    },
+  },
+  Heading: {
   }
 }
 
