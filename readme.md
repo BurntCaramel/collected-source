@@ -1,4 +1,11 @@
-# GitHub Loader
+# Source content
+
+- Trello
+- GitHub
+
+## Usage
+
+- GraphQL: `/graphql`
 
 ## Deploying
 
