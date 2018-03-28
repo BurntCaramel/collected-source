@@ -23,6 +23,7 @@
     "dev": "NODE_ENV=development nodemon src/server.js",
     "start": "NODE_ENV=production node src/server.js",
     "test": "ava ./src/**/*.test.js",
-    "deploy:staging": "yarn && yarn test && up"
+    "deploy:staging": "yarn && yarn test && up",
+    "deploy:prod": "yarn && yarn test && up deploy production"
   }
 }
