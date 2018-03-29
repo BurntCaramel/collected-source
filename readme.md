@@ -65,10 +65,14 @@ query Trello {
 
 ## Deploying
 
-### Staging
+### AWS Lambda with Apex Up
+
+1. [Install Up](https://github.com/apex/up/issues#quick-start)
+
+#### Staging
 
     up
 
-### Production
+#### Production
 
     up deploy production
