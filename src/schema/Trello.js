@@ -67,7 +67,16 @@ const resolvers = {
       context
     ) {
       if (q) {
-        return R.filter(R.propSatisfies(R.contains(q), 'name'), lists)
+        return R.filter(
+          R.propSatisfies(
+            R.pipe(
+              R.toLower,
+              R.contains(R.toLower(q))
+            ),
+            'name'
+          ),
+          lists
+        )
       }
 
       return lists
