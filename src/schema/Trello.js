@@ -15,7 +15,7 @@ const typeDefs = `
 type TrelloBoard {
   id: String
   name: String
-  lists: [TrelloList]
+  lists(q: String): [TrelloList]
   list(name: String): TrelloList
 }
 
@@ -58,9 +58,13 @@ const resolvers = {
   TrelloBoard: {
     async lists(
       { lists },
-      args,
+      { q },
       context
     ) {
+      if (q) {
+        return R.filter(R.propSatisfies(R.contains(q), 'name'), lists)
+      }
+
       return lists
     },
     async list(
