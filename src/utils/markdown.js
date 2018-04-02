@@ -22,7 +22,6 @@ const listListItems = R.pipe(
   R.map(R.pipe(
     R.drop(2),
     R.trim,
-    R.objOf('text'),
   )),
 )
 

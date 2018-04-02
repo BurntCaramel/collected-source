@@ -26,21 +26,21 @@ type TrelloList {
 }
 
 type TrelloCard {
-  id: String!
+  id: String
   url: String
-  name: String
-  desc: MarkdownTransformer
+  name: TaggedStringTransformer
+  desc: MarkdownDocumentTransformer
 }
 
-type MarkdownTransformer {
+type MarkdownDocumentTransformer {
   source: String
-  sections: [StringTransformer!]
+  sections: [MarkdownSectionTransformer!]
 }
 
-type StringTransformer {
+type MarkdownSectionTransformer {
   source: String
   headings: [Heading!]
-  listItems: [ListItem!]
+  listItems: [TaggedStringTransformer!]
 }
 
 type Heading {
@@ -49,7 +49,7 @@ type Heading {
 }
 
 type ListItem {
-  text: String
+  text: TaggedStringTransformer
 }
 `
 
@@ -97,7 +97,7 @@ const resolvers = {
       return cards
     },
   },
-  MarkdownTransformer: {
+  MarkdownDocumentTransformer: {
     source(string) {
       return string
     },
@@ -105,7 +105,7 @@ const resolvers = {
       return R.split(/---+\s*/, string)
     },
   },
-  StringTransformer: {
+  MarkdownSectionTransformer: {
     source(string) {
       return string
     },

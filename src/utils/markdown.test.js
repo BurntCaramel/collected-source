@@ -21,8 +21,8 @@ yep yep
 test('listListItems()', t => {
   t.deepEqual(
     [
-      { text: 'first' },
-      { text: 'second' }
+      'first',
+      'second'
     ],
     listListItems(`
 - first

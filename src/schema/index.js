@@ -1,10 +1,12 @@
 const { makeExecutableSchema } = require('graphql-tools')
+const Common = require('./Common')
 const GitHub = require('./GitHub')
 const Trello = require('./Trello')
 const Components = require('./Components')
 
 const baseTypeDefs = `
 type Query {
+  ${Common.rootQueryFields}
   ${GitHub.rootQueryFields}
   ${Trello.rootQueryFields}
   ${Components.rootQueryFields}
@@ -16,6 +18,7 @@ schema {
 `
 
 const typeDefs = [
+  Common.typeDefs,
   GitHub.typeDefs,
   Trello.typeDefs,
   Components.typeDefs,
@@ -25,11 +28,13 @@ const typeDefs = [
 const resolvers = Object.assign(
   {
     Query: Object.assign({},
+      Common.rootQueryResolvers,
       GitHub.rootQueryResolvers,
       Trello.rootQueryResolvers,
       Components.rootQueryResolvers
     )
   },
+  Common.resolvers,
   GitHub.resolvers,
   Trello.resolvers,
   Components.resolvers,
