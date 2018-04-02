@@ -29,7 +29,12 @@ type TrelloCard {
   id: String!
   url: String
   name: String
-  desc: StringTransformer
+  desc: MarkdownTransformer
+}
+
+type MarkdownTransformer {
+  text: String
+  sections: [StringTransformer!]
 }
 
 type StringTransformer {
@@ -90,6 +95,14 @@ const resolvers = {
         )
       }
       return cards
+    },
+  },
+  MarkdownTransformer: {
+    text(string) {
+      return string
+    },
+    sections(string) {
+      return R.split(/---+\s*/, string)
     },
   },
   StringTransformer: {
