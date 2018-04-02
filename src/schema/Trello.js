@@ -33,12 +33,12 @@ type TrelloCard {
 }
 
 type MarkdownTransformer {
-  text: String
+  source: String
   sections: [StringTransformer!]
 }
 
 type StringTransformer {
-  text: String
+  source: String
   headings: [Heading!]
   listItems: [ListItem!]
 }
@@ -98,7 +98,7 @@ const resolvers = {
     },
   },
   MarkdownTransformer: {
-    text(string) {
+    source(string) {
       return string
     },
     sections(string) {
@@ -106,7 +106,7 @@ const resolvers = {
     },
   },
   StringTransformer: {
-    text(string) {
+    source(string) {
       return string
     },
     headings(string) {
