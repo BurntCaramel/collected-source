@@ -62,6 +62,7 @@ const routes = [
     path: '/minecoin',
     handler() {
       clearLoadCache()
+      return {}
     }
   }
 ]
