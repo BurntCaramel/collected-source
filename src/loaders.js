@@ -28,7 +28,13 @@ const gitHubRepoListFiles = new DataLoader((references) => {
   }
 })
 
+function clearCache() {
+  trelloBoard.clearAll()
+  gitHubRepoListFiles.clearAll()
+}
+
 module.exports = {
   trelloBoard,
-  gitHubRepoListFiles
+  gitHubRepoListFiles,
+  clearCache
 }

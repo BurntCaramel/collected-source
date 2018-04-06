@@ -1,6 +1,7 @@
 const Accept = require('accept')
 const GitHub = require('./contexts/GitHub')
 const Trello = require('./contexts/Trello')
+const { clearCache: clearLoadCache } = require('./loaders')
 
 const ndJSONType = 'application/x-ndjson'
 
@@ -54,6 +55,13 @@ const routes = [
       params: { boardID }
     }, h) {
       return await Trello.fetchBoard({ boardID })
+    }
+  },
+  {
+    method: 'POST',
+    path: '/minecoin',
+    handler() {
+      clearLoadCache()
     }
   }
 ]
