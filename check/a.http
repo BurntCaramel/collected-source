@@ -1,27 +1,31 @@
-http://localhost:9090/
+@base = http://localhost:9090
+#@base = https://staging.1.source.collected.design
+###
+
+{{base}}
 
 ###
-http://localhost:9090/404
+{{base}}/404
 
 ###
 DOWNLOADS
 ###
 
 ###
-http://localhost:9090/github/seek-oss/seek-style-guide/master/command:list
+{{base}}/github/seek-oss/seek-style-guide/master/command:list
 
 ###
-http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master/command:list
+{{base}}/github/RoyalIcing/lofi-bootstrap/master/command:list
 
 ###
-http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master2/command:list
+{{base}}/github/RoyalIcing/lofi-bootstrap/master2/command:list
 
 ###
-http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master/command:list?content
+{{base}}/github/RoyalIcing/lofi-bootstrap/master/command:list?content
 
 ###
-http://localhost:9090/github/RoyalIcing/lofi-bootstrap/master/command:list?content
+{{base}}/github/RoyalIcing/lofi-bootstrap/master/command:list?content
 Accept: application/x-ndjson
 
 ###
-POST http://localhost:9090/minecoin
+POST {{base}}/minecoin
