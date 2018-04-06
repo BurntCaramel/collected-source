@@ -10,6 +10,26 @@ type TaggedStringTransformer {
   text: String
   tags: [String!]
 }
+
+type MarkdownDocumentTransformer {
+  source: String
+  sections: [MarkdownSectionTransformer!]
+}
+
+type MarkdownSectionTransformer {
+  source: String
+  headings: [Heading!]
+  listItems: [TaggedStringTransformer!]
+}
+
+type Heading {
+  text: String
+  level: Int
+}
+
+type ListItem {
+  text: TaggedStringTransformer
+}
 `
 
 const rootQueryFields = `
@@ -26,6 +46,27 @@ const resolvers = {
     tags(string) {
       return listTags(string)
     }
+  },
+  MarkdownDocumentTransformer: {
+    source(string) {
+      return string
+    },
+    sections(string) {
+      return R.split(/---+\s*/, string)
+    },
+  },
+  MarkdownSectionTransformer: {
+    source(string) {
+      return string
+    },
+    headings(string) {
+      return listHeadings(string)
+    },
+    listItems(string) {
+      return listListItems(string)
+    }
+  },
+  Heading: {
   },
 }
 

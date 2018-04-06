@@ -31,26 +31,6 @@ type TrelloCard {
   name: TaggedStringTransformer
   desc: MarkdownDocumentTransformer
 }
-
-type MarkdownDocumentTransformer {
-  source: String
-  sections: [MarkdownSectionTransformer!]
-}
-
-type MarkdownSectionTransformer {
-  source: String
-  headings: [Heading!]
-  listItems: [TaggedStringTransformer!]
-}
-
-type Heading {
-  text: String
-  level: Int
-}
-
-type ListItem {
-  text: TaggedStringTransformer
-}
 `
 
 const rootQueryFields = `
@@ -106,27 +86,6 @@ const resolvers = {
       return cards
     },
   },
-  MarkdownDocumentTransformer: {
-    source(string) {
-      return string
-    },
-    sections(string) {
-      return R.split(/---+\s*/, string)
-    },
-  },
-  MarkdownSectionTransformer: {
-    source(string) {
-      return string
-    },
-    headings(string) {
-      return listHeadings(string)
-    },
-    listItems(string) {
-      return listListItems(string)
-    }
-  },
-  Heading: {
-  }
 }
 
 const rootQueryResolvers = {
