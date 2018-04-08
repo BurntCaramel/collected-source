@@ -158,5 +158,5 @@ async function listComponents1({
 
 module.exports = {
   listComponents: listComponents1,
-  listFiles
+  listFiles,
 }
