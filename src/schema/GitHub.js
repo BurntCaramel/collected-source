@@ -12,6 +12,7 @@ type GitHubRepo {
 type GitHubFile {
   path: String!
   content: String
+  asMarkdown: MarkdownDocumentTransformer
 }
 `
 
@@ -37,7 +38,13 @@ const resolvers = {
       })
     }
   },
-  GitHubFile: {}
+  GitHubFile: {
+    asMarkdown(
+      { content }
+    ) {
+      return content
+    }
+  }
 }
 
 const rootQueryResolvers = {
