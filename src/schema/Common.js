@@ -57,7 +57,7 @@ const resolvers = {
       return string
     },
     sections(string) {
-      return R.split(/---+\s*/, string)
+      return R.split(/^[-\*]{3,}\s*/m, string)
     },
     frontmatter(string) {
       return extractFrontmatter(string)

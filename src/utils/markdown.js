@@ -7,7 +7,7 @@ const frontmatterKeyValuePairRegex = /^([^:]+):\s*(.+)?/
 
 const extractFrontmatter = R.pipe(
   R.match(frontmatterRegex),
-  R.prop(1),
+  R.propOr('', 1),
   R.split('\n'),
   R.map(R.pipe(
     R.match(frontmatterKeyValuePairRegex),
