@@ -1,5 +1,10 @@
 const test = require('ava')
-const { listHeadings, listListItems } = require('./markdown')
+const {
+  listHeadings,
+  listListItems,
+  extractFrontmatter,
+  stripFrontmatter
+} = require('./markdown')
 
 test('listHeadings()', t => {
   t.deepEqual(
@@ -33,4 +38,53 @@ blah blah
 
 yep yep
 `));
+})
+
+test('stripFrontmatter()', t => {
+  t.deepEqual(
+    `# Primary heading
+
+## Subheading`,
+    stripFrontmatter(`---
+title: The first time
+title: Example - the next level experience: of the world
+
+yes: true
+ok:true
+novalue:
+:
+::
+:thing
+---
+
+# Primary heading
+
+## Subheading`)
+  )
+})
+
+test('extractFrontmatter()', t => {
+  t.deepEqual(
+    {
+      title: 'Example - the next level experience: of the world',
+      yes: 'true',
+      ok: 'true',
+      novalue: '',
+    },
+extractFrontmatter(`---
+title: The first time
+title: Example - the next level experience: of the world
+
+yes: true
+ok:true
+novalue:
+:
+::
+:thing
+---
+
+# Primary heading
+
+## Subheading`)
+  )
 })

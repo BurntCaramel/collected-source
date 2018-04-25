@@ -2,7 +2,7 @@ const { makeExecutableSchema } = require('graphql-tools')
 const R = require('ramda')
 const Trello = require('../contexts/Trello')
 const { listTags, stripTags } = require('../utils/tags')
-const { listHeadings, listListItems } = require('../utils/markdown')
+const { listHeadings, listListItems, extractFrontmatter } = require('../utils/markdown')
 
 const typeDefs = `
 type TaggedStringTransformer {
@@ -14,6 +14,7 @@ type TaggedStringTransformer {
 type MarkdownDocumentTransformer {
   source: String
   sections: [MarkdownSectionTransformer!]
+  frontmatter: MarkdownFrontmatter
 }
 
 type MarkdownSectionTransformer {
@@ -29,6 +30,10 @@ type Heading {
 
 type ListItem {
   text: TaggedStringTransformer
+}
+
+type MarkdownFrontmatter {
+  value(key: String!): String!
 }
 `
 
@@ -54,6 +59,9 @@ const resolvers = {
     sections(string) {
       return R.split(/---+\s*/, string)
     },
+    frontmatter(string) {
+      return extractFrontmatter(string)
+    }
   },
   MarkdownSectionTransformer: {
     source(string) {
@@ -68,6 +76,11 @@ const resolvers = {
   },
   Heading: {
   },
+  MarkdownFrontmatter: {
+    value(pairs, { key }) {
+      return pairs[key]
+    }
+  }
 }
 
 const rootQueryResolvers = {

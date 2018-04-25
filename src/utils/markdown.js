@@ -2,8 +2,26 @@ const R = require('ramda')
 
 const headingsRegex = /^#+\s+(.+)/gm
 const listItemRegex = /^\s*[-*+]\s+(.+)/gm
+const frontmatterRegex = /^---\n([\s\S]+)\n---\n+/m
+const frontmatterKeyValuePairRegex = /^([^:]+):\s*(.+)?/
+
+const extractFrontmatter = R.pipe(
+  R.match(frontmatterRegex),
+  R.prop(1),
+  R.split('\n'),
+  R.map(R.pipe(
+    R.match(frontmatterKeyValuePairRegex),
+    R.props([1, 2]),
+    R.map(R.defaultTo(''))
+  )),
+  R.reject(R.propEq(0, '')),
+  R.fromPairs
+)
+
+const stripFrontmatter = R.replace(frontmatterRegex, '')
 
 const listHeadings = R.pipe(
+  stripFrontmatter,
   R.match(headingsRegex),
   R.map(R.converge(
     R.unapply(R.zipObj(['text', 'level'])),
@@ -18,6 +36,7 @@ const listHeadings = R.pipe(
 )
 
 const listListItems = R.pipe(
+  stripFrontmatter,
   R.match(listItemRegex),
   R.map(R.pipe(
     R.drop(2),
@@ -28,4 +47,6 @@ const listListItems = R.pipe(
 module.exports = {
   listHeadings,
   listListItems,
+  extractFrontmatter,
+  stripFrontmatter
 }
