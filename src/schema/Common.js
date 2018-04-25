@@ -33,7 +33,7 @@ type ListItem {
 }
 
 type MarkdownFrontmatter {
-  value(key: String!): String!
+  value(key: String!): String
 }
 `
 
