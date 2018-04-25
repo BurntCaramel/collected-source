@@ -2,7 +2,7 @@ const R = require('ramda')
 
 const headingsRegex = /^#+\s+(.+)/gm
 const listItemRegex = /^\s*[-*+]\s+(.+)/gm
-const frontmatterRegex = /^---\n([\s\S]+)\n---\n+/m
+const frontmatterRegex = /^---\n([\s\S]+)\n---\n+/
 const frontmatterKeyValuePairRegex = /^([^:]+):\s*(.+)?/
 
 const extractFrontmatter = R.pipe(
