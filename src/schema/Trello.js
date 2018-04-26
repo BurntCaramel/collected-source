@@ -1,4 +1,3 @@
-const { makeExecutableSchema } = require('graphql-tools')
 const R = require('ramda')
 const Trello = require('../contexts/Trello')
 const { hasTag } = require('../utils/tags')
@@ -17,6 +16,7 @@ type TrelloBoard {
   name: String
   lists(q: String): [TrelloList]
   list(name: String): TrelloList
+  collections(q: String): [Collection!]
 }
 
 type TrelloList {
@@ -38,6 +38,22 @@ const rootQueryFields = `
     id: String!
   ): TrelloBoard
 `
+
+async function cardsForList(
+  list,
+  { tags },
+  { loaders }
+) {
+  const data = await loaders.trelloBoard.load(list.idBoard)
+  let cards = data.cards.filter((card) => card.idList === list.id)
+  if (!!tags) {
+    cards = R.filter(
+      cardHasTags(tags),
+      cards
+    )
+  }
+  return cards
+}
 
 const resolvers = {
   TrelloBoard: {
@@ -67,24 +83,56 @@ const resolvers = {
       context
     ) {
       return R.find(R.propEq('name', name), lists)
-    }
-  },
-  TrelloList: {
-    async cards(
-      list,
-      { tags },
+    },
+    async collections(
+      { lists },
+      { q },
       { loaders }
     ) {
-      const data = await loaders.trelloBoard.load(list.idBoard)
-      let cards = data.cards.filter((card) => card.idList === list.id)
-      if (!!tags) {
-        cards = R.filter(
-          cardHasTags(tags),
-          cards
-        )
+      if (q) {
+        return R.pipe(
+          R.filter(
+            R.propSatisfies(
+              R.pipe(
+                R.toLower,
+                R.contains(R.toLower(q))
+              ),
+              'name'
+            ),
+          ),
+          R.map(R.converge(R.unapply(R.mergeAll), [
+            R.identity,
+            R.pipe(
+              R.prop('name'),
+              R.split(' '),
+              R.last,
+              R.objOf('domain'),
+              R.objOf('values')
+            ),
+            R.always({
+              async resolveUnits(list, query, context) {
+                const cards = await cardsForList(list, query, context)
+                return R.map(
+                  R.converge(R.merge, [
+                    R.identity,
+                    R.pipe(
+                      R.prop('desc'),
+                      R.objOf('body')
+                    ),
+                  ]),
+                  cards
+                )
+              }
+            }),
+          ])),
+        )(lists)
       }
-      return cards
+
+      return lists
     },
+  },
+  TrelloList: {
+    cards: cardsForList
   },
 }
 
