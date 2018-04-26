@@ -89,46 +89,44 @@ const resolvers = {
       { q },
       { loaders }
     ) {
-      if (q) {
-        return R.pipe(
-          R.filter(
-            R.propSatisfies(
-              R.pipe(
-                R.toLower,
-                R.contains(R.toLower(q))
-              ),
-              'name'
-            ),
-          ),
-          R.map(R.converge(R.unapply(R.mergeAll), [
-            R.identity,
-            R.pipe(
-              R.prop('name'),
-              R.split(' '),
-              R.last,
-              R.objOf('domain'),
-              R.objOf('values')
-            ),
-            R.always({
-              async resolveUnits(list, query, context) {
-                const cards = await cardsForList(list, query, context)
-                return R.map(
-                  R.converge(R.merge, [
-                    R.identity,
-                    R.pipe(
-                      R.prop('desc'),
-                      R.objOf('body')
-                    ),
-                  ]),
-                  cards
-                )
-              }
-            }),
-          ])),
-        )(lists)
-      }
+      q = q.trim()
 
-      return lists
+      return R.pipe(
+        R.filter(
+          R.propSatisfies(
+            q === '' ? R.always(true) : R.pipe(
+              R.toLower,
+              R.contains(R.toLower(q))
+            ),
+            'name'
+          ),
+        ),
+        R.map(R.converge(R.unapply(R.mergeAll), [
+          R.identity,
+          R.pipe(
+            R.prop('name'),
+            R.split(' '),
+            R.last,
+            R.objOf('domain'),
+            R.objOf('values')
+          ),
+          R.always({
+            async resolveUnits(list, query, context) {
+              const cards = await cardsForList(list, query, context)
+              return R.map(
+                R.converge(R.merge, [
+                  R.identity,
+                  R.pipe(
+                    R.prop('desc'),
+                    R.objOf('body')
+                  ),
+                ]),
+                cards
+              )
+            }
+          }),
+        ])),
+      )(lists)
     },
   },
   TrelloList: {
