@@ -86,7 +86,7 @@ const resolvers = {
     },
     async collections(
       { lists },
-      { q },
+      { q = '' },
       { loaders }
     ) {
       q = q.trim()
