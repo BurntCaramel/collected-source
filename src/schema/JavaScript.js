@@ -104,8 +104,8 @@ const resolvers = {
                 ClassDeclaration(path, state) {
                   const classDeclaration = {
                      name: path.node.id.name,
-                     superClass: path.node.superClass.name,
-                     methods: []
+                     superClass: R.path(['superClass', 'name'], path.node),
+                     methods: [],
                   }
                   classDeclarations.push(classDeclaration)
                   path.traverse(classVisitor, { classDeclaration })
