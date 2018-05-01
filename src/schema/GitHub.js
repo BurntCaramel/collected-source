@@ -8,7 +8,7 @@ type GitHubRepo {
   owner: String!
   repoName: String!
   ref: String
-  files: [GitHubFile]
+  files(pathPrefixes: [String]): [GitHubFile]
   dependencies: GitHubDependencies
 }
 
@@ -24,12 +24,14 @@ type GitHubDependencySource {
 type GitHubDependencyItem {
   name: String
   rule: String
+  groups: [String!]
 }
 
 type GitHubFile {
   path: String!
   content: String
   asMarkdown: MarkdownDocumentTransformer
+  asJavaScript: JavaScriptFile
 }
 `
 
@@ -45,7 +47,7 @@ const resolvers = {
   GitHubRepo: {
     async files(
       { owner, repoName, ref },
-      _args,
+      { pathPrefixes },
       _context
     ) {
       return GitHub.listFiles({
@@ -54,6 +56,14 @@ const resolvers = {
         ref,
         includeContent: true
       })
+        .then(files => {
+          if (pathPrefixes && pathPrefixes.length > 0) {
+            return files.filter(file => pathPrefixes.some(pathPrefix => file.path.startsWith(pathPrefix)))
+          }
+          else {
+            return files
+          }
+        })
     },
     async dependencies(
       { owner, repoName, ref }
@@ -94,7 +104,14 @@ const resolvers = {
       { content }
     ) {
       return content
-    }
+    },
+    asJavaScript(
+      { path, content }
+    ) {
+      if (!!content && /\.(js|jsx|ts|tsx)$/.test(path)) {
+        return { path, content }
+      }
+    },
   }
 }
 
