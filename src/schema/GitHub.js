@@ -1,5 +1,6 @@
 const { makeExecutableSchema } = require('graphql-tools')
 const R = require('ramda')
+const mm = require('micromatch')
 const GitHub = require('../contexts/GitHub')
 const { listDependenciesInPackageJSONContent } = require('../utils/dependencies')
 
@@ -8,7 +9,7 @@ type GitHubRepo {
   owner: String!
   repoName: String!
   ref: String
-  files(pathPrefixes: [String]): [GitHubFile]
+  files(pathPrefixes: [String], pathMatching: [String], pathNotMatching: [String]): [GitHubFile]
   dependencies: GitHubDependencies
 }
 
@@ -47,23 +48,31 @@ const resolvers = {
   GitHubRepo: {
     async files(
       { owner, repoName, ref },
-      { pathPrefixes },
+      { pathPrefixes, pathMatching, pathNotMatching },
       _context
     ) {
-      return GitHub.listFiles({
+      let files = await GitHub.listFiles({
         owner,
         repo: repoName,
         ref,
         includeContent: true
       })
-        .then(files => {
-          if (pathPrefixes && pathPrefixes.length > 0) {
-            return files.filter(file => pathPrefixes.some(pathPrefix => file.path.startsWith(pathPrefix)))
-          }
-          else {
-            return files
-          }
-        })
+
+      if (pathPrefixes && pathPrefixes.length > 0) {
+        files = files.filter(file => pathPrefixes.some(pathPrefix => file.path.startsWith(pathPrefix)))
+      }
+
+      if (pathMatching) {
+        const testA = R.anyPass(pathMatching.map(mm.matcher))
+        files = files.filter(file => testA(file.path))
+      }
+
+      if (pathNotMatching) {
+        const testB = R.anyPass(pathNotMatching.map(mm.matcher))
+        files = files.filter(file => !testB(file.path))
+      }
+
+      return files
     },
     async dependencies(
       { owner, repoName, ref }
