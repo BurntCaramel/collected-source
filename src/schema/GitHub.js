@@ -79,7 +79,7 @@ const resolvers = {
     ) {
       const files = await GitHub.listFiles({
         owner,
-        repo: repoName,
+        repoName,
         ref,
         includeContent: true
       })
