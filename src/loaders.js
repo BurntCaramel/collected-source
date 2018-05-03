@@ -15,17 +15,17 @@ function makeLoaders() {
   })
 
   const gitHubRepoListFiles = new DataLoader((references) => {
-    return Promise.all(references.map(({ owner, repoName, ref }) => {
+    return Promise.all(references.map(({ owner, repoName, ref, includeContent }) => {
       return GitHub.listFiles({
         owner,
         repo: repoName,
         ref,
-        includeContent: true
+        includeContent
       })
     }))
   }, {
-    cacheKeyFn({ owner, repoName, ref }) {
-      return [owner, repoName, ref].join('/')
+    cacheKeyFn({ owner, repoName, ref, includeContent }) {
+      return [owner, repoName, ref, includeContent ? '+includeContent' : '-includeContent'].join('/')
     }
   })
 

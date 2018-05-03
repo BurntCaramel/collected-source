@@ -49,11 +49,11 @@ const resolvers = {
     async files(
       { owner, repoName, ref },
       { pathPrefixes, pathMatching, pathNotMatching },
-      _context
+      { loaders }
     ) {
-      let files = await GitHub.listFiles({
+      let files = await loaders.gitHubRepoListFiles.load({
         owner,
-        repo: repoName,
+        repoName,
         ref,
         includeContent: true
       })

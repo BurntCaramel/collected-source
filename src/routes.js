@@ -18,7 +18,7 @@ const routes = [
   },
   {
     method: 'GET',
-    path: '/github/{owner}/{repo}/{ref}/command:list',
+    path: '/github/{owner}/{repoName}/{ref}/command:list',
     options: {
       pre: [
         [
@@ -28,7 +28,7 @@ const routes = [
       cors: true,
     },
     async handler({
-      params: { owner, repo, ref },
+      params: { owner, repoName, ref },
       query: { content },
       pre: { accept }
     },
@@ -38,7 +38,7 @@ const routes = [
       return h.response(
         await GitHub.listFiles({
           owner,
-          repo,
+          repoName,
           ref,
           includeContent: content != null,
           streamJSON: isNDJSON

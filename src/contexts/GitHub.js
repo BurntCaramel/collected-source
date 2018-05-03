@@ -11,10 +11,10 @@ const octokit = require('../services/octokit')
 
 async function fetchZip({
   owner,
-  repo,
+  repoName,
   ref,
 }) {
-  const zipURL = `https://api.github.com/repos/${owner}/${repo}/zipball/${ref}`
+  const zipURL = `https://api.github.com/repos/${owner}/${repoName}/zipball/${ref}`
   const { data: zipDownload } = await axios.get(zipURL, {
     responseType: 'stream'
   })
@@ -46,12 +46,12 @@ async function fetchZip({
 
 async function listFiles({
   owner,
-  repo,
+  repoName,
   ref,
   includeContent = false,
   streamJSON = false
 }) {
-  const zip = await fetchZip({ owner, repo, ref })
+  const zip = await fetchZip({ owner, repoName, ref })
   console.log('creating promises')
   const promises = zip.getEntries().map(async (zipEntry) => {
     console.log('processing entry', zipEntry.entryName)
