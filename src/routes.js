@@ -1,6 +1,6 @@
 const Accept = require('accept')
-const GitHub = require('./contexts/GitHub')
-const Trello = require('./contexts/Trello')
+const GitHub = require('./services/GitHub')
+const Trello = require('./services/Trello')
 
 const ndJSONType = 'application/x-ndjson'
 

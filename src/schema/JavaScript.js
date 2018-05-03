@@ -3,7 +3,7 @@ const R = require('ramda')
 const babel = require('babel-core')
 const babylon = require('babylon')
 const traverseAST = require('babel-traverse')
-const Trello = require('../contexts/Trello')
+const Trello = require('../services/Trello')
 const { listTags, stripTags } = require('../utils/tags')
 const { listHeadings, listListItems, extractFrontmatter, stripFrontmatter } = require('../utils/markdown')
 

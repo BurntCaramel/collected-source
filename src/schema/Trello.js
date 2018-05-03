@@ -1,5 +1,5 @@
 const R = require('ramda')
-const Trello = require('../contexts/Trello')
+const Trello = require('../services/Trello')
 const { hasTag } = require('../utils/tags')
 const { listHeadings, listListItems } = require('../utils/markdown')
 

@@ -1,5 +1,5 @@
 const { makeExecutableSchema } = require('graphql-tools')
-const GitHub = require('../contexts/GitHub')
+const GitHub = require('../services/GitHub')
 
 const typeDefs = `
 enum Prominence {

@@ -1,6 +1,6 @@
 const DataLoader = require('dataloader')
-const GitHub = require('./contexts/GitHub')
-const Trello = require('./contexts/Trello')
+const GitHub = require('./services/GitHub')
+const Trello = require('./services/Trello')
 
 function makeLoaders() {
   const trelloBoard = new DataLoader((boardIDs) => {

@@ -1,6 +1,6 @@
 const { makeExecutableSchema } = require('graphql-tools')
 const R = require('ramda')
-const Trello = require('../contexts/Trello')
+const Trello = require('../services/Trello')
 const { listTags, stripTags } = require('../utils/tags')
 const { listHeadings, listListItems, extractFrontmatter, stripFrontmatter } = require('../utils/markdown')
 

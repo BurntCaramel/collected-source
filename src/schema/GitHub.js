@@ -1,7 +1,7 @@
 const { makeExecutableSchema } = require('graphql-tools')
 const R = require('ramda')
 const mm = require('micromatch')
-const GitHub = require('../contexts/GitHub')
+const GitHub = require('../services/GitHub')
 const { listDependenciesInPackageJSONContent } = require('../utils/dependencies')
 
 const typeDefs = `
