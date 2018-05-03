@@ -18,7 +18,7 @@ function makeLoaders() {
     return Promise.all(references.map(({ owner, repoName, ref, includeContent }) => {
       return GitHub.listFiles({
         owner,
-        repo: repoName,
+        repoName,
         ref,
         includeContent
       })
