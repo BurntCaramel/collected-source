@@ -3923,6 +3923,17 @@ teamwork@3.x.x:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/teamwork/-/teamwork-3.0.1.tgz#ff38c7161f41f8070b7813716eb6154036ece196"
 
+temp-dir@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/temp-dir/-/temp-dir-1.0.0.tgz#0a7c0ea26d3a39afa7e0ebea9c1fc0bc4daa011d"
+
+tempy@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/tempy/-/tempy-0.2.1.tgz#9038e4dbd1c201b74472214179bc2c6f7776e54c"
+  dependencies:
+    temp-dir "^1.0.0"
+    unique-string "^1.0.0"
+
 term-size@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/term-size/-/term-size-1.2.0.tgz#458b83887f288fc56d6fffbfad262e26638efa69"

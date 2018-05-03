@@ -1,7 +1,7 @@
 const axios = require('axios')
 const Boom = require('boom')
 const Path = require('path')
-const { tmpdir } = require('os')
+const tempy = require('tempy')
 const { createWriteStream } = require('fs')
 const { randomBytes } = require('crypto')
 const AdmZip = require('adm-zip')
@@ -23,7 +23,7 @@ async function fetchZip({
     })
 
   const fileName = randomBytes(32).toString('hex') + '.zip'
-  const writePath = Path.join(tmpdir(), fileName)
+  const writePath = tempy.file({ name: fileName })
   const zipWriteFile = createWriteStream(writePath)
 
   const finishWritePromise = Promise.all([
