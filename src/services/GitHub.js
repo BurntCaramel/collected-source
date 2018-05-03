@@ -44,6 +44,22 @@ async function fetchZip({
   return new AdmZip(writePath)
 }
 
+async function ndJSONStreamFromPromises(promises) {
+  const stream = NDJSON.serialize();
+
+  (async () => {
+    for (const promise of promises) {
+      const json = await promise;
+      if (!!json) {
+        stream.write(json);
+      }
+    }
+    stream.end();
+  })();
+
+  return new Stream.Readable().wrap(stream);
+}
+
 async function listFiles({
   owner,
   repoName,
@@ -80,19 +96,7 @@ async function listFiles({
   })
 
   if (streamJSON) {
-    const stream = NDJSON.serialize();
-
-    (async () => {
-      for (const promise of promises) {
-        const json = await promise;
-        if (!!json) {
-          stream.write(json);
-        }
-      }
-      stream.end();
-    })();
-
-    return new Stream.Readable().wrap(stream);
+    return await ndJSONStreamFromPromises(promises)
   }
   else {
     return await Promise.all(promises)
