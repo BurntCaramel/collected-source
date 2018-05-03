@@ -18,7 +18,7 @@ async function start() {
       graphqlOptions: (request) => ({
         schema: require('./schema'),
         context: {
-          loaders: require('./loaders')
+          loaders: require('./loaders')()
         }
       }),
       route: {
@@ -35,7 +35,7 @@ async function start() {
         return ({
           schema: require('./schema'),
           context: {
-            loaders: require('./loaders')
+            loaders: require('./loaders')()
           },
           endpointURL: './graphql'
         })
