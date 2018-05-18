@@ -24,7 +24,7 @@ type MarkdownDocumentTransformer {
 type MarkdownSectionTransformer {
   source: String
   headings: [Heading!]
-  listItems: [TaggedStringTransformer!]
+  listItems: [ListItem!]
 }
 
 type Heading {
@@ -33,7 +33,8 @@ type Heading {
 }
 
 type ListItem {
-  text: TaggedStringTransformer
+  content: TaggedStringTransformer
+  childItems: [ListItem!]
 }
 
 type MarkdownFrontmatter {

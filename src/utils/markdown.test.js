@@ -23,13 +23,52 @@ yep yep
 
 test('listListItems()', t => {
   t.deepEqual(
-    ['first', 'second'],
+    [{ content: 'first', childItems: [] }, { content: 'second', childItems: [] }],
     listListItems(`
+blah de blah
+
 - first
 
 blah blah
 
 - second
+
+yep yep
+`)
+  );
+});
+
+test('listListItems() with nothing', t => {
+  t.deepEqual(
+    [],
+    listListItems('')
+  );
+});
+
+test('listListItems() with nested items', t => {
+  t.deepEqual(
+    [{ content: 'first', childItems: [
+      { content: 'a', childItems: [] },
+      { content: 'b', childItems: [
+        { content: 'c', childItems: [
+          { content: '', childItems: [
+            { content: 'whoa', childItems: [] }
+          ]}
+        ] }
+      ] },
+      { content: 'd', childItems: [] }
+    ] }, { content: 'second', childItems: [
+      { content: 'e', childItems: [] }
+    ] }],
+    listListItems(`
+- first
+  - a
+  - b  
+    - c
+        - whoa
+  - d 
+- second    
+  - e
 
 yep yep
 `)

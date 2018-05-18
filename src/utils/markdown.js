@@ -36,7 +36,34 @@ const listHeadings = R.pipe(
 const listListItems = R.pipe(
   stripFrontmatter,
   R.match(listItemRegex),
-  R.map(R.pipe(R.drop(2), R.trim))
+  R.reduce((items = [], input) => {
+    input = input.replace('\n', '')
+    const [ indentWhitespace, ...rest ] = input.split('-')
+    const content = R.pipe(R.join('-'), R.trim)(rest)
+    const level = indentWhitespace.replace(/\s\s/g, ' ').replace(/\t/, ' ').length
+
+    const newItem = {
+      content,
+      childItems: []
+    }
+
+    let targetedItems = items
+    let i = level
+    while (i > 0) {
+      let nextItem = targetedItems[targetedItems.length - 1]
+      if (!nextItem) {
+        nextItem = { content: '', childItems: []}
+        targetedItems.push(nextItem)
+      }
+      targetedItems = nextItem.childItems
+      i -= 1
+    }
+
+    targetedItems.push(newItem)
+
+    return items
+  }, undefined),
+  R.defaultTo([]),
 );
 
 module.exports = {
