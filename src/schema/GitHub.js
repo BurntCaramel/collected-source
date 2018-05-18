@@ -75,7 +75,9 @@ const resolvers = {
       return files
     },
     async dependencies(
-      { owner, repoName, ref }
+      { owner, repoName, ref },
+      _args,
+      { loaders }
     ) {
       const files = await loaders.gitHubRepoListFiles.load({
         owner,
