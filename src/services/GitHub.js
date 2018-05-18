@@ -15,6 +15,8 @@ async function fetchZip({
   ref,
 }) {
   const zipURL = `https://api.github.com/repos/${owner}/${repoName}/zipball/${ref}`
+  // const zipURL = `https://github.com/${owner}/${repoName}/archive/${ref}.zip`
+  console.log('fetching GitHub repo zip', zipURL)
   const { data: zipDownload } = await axios.get(zipURL, {
     responseType: 'stream'
   })
