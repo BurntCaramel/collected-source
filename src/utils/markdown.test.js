@@ -1,17 +1,14 @@
-const test = require('ava')
+const test = require('ava');
 const {
   listHeadings,
   listListItems,
   extractFrontmatter,
-  stripFrontmatter
-} = require('./markdown')
+  stripFrontmatter,
+} = require('./markdown');
 
 test('listHeadings()', t => {
   t.deepEqual(
-    [
-      { text: 'Primary', level: 1 },
-      { text: 'Secondary', level: 2 }
-    ],
+    [{ text: 'Primary', level: 1 }, { text: 'Secondary', level: 2 }],
     listHeadings(`
 # Primary
 
@@ -20,15 +17,13 @@ blah blah
 ## Secondary
 
 yep yep
-`));
-})
+`)
+  );
+});
 
 test('listListItems()', t => {
   t.deepEqual(
-    [
-      'first',
-      'second'
-    ],
+    ['first', 'second'],
     listListItems(`
 - first
 
@@ -37,8 +32,9 @@ blah blah
 - second
 
 yep yep
-`));
-})
+`)
+  );
+});
 
 test('stripFrontmatter()', t => {
   t.deepEqual(
@@ -60,8 +56,8 @@ novalue:
 # Primary heading
 
 ## Subheading`)
-  )
-})
+  );
+});
 
 test('extractFrontmatter()', t => {
   t.deepEqual(
@@ -71,7 +67,7 @@ test('extractFrontmatter()', t => {
       ok: 'true',
       novalue: '',
     },
-extractFrontmatter(`---
+    extractFrontmatter(`---
 title: The first time
 title: Example - the next level experience: of the world
 
@@ -86,5 +82,5 @@ novalue:
 # Primary heading
 
 ## Subheading`)
-  )
-})
+  );
+});

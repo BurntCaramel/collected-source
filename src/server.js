@@ -1,56 +1,56 @@
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+  require('dotenv').config();
 }
-const Hapi = require('hapi')
-const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi')
-const DataLoader = require('dataloader')
+const Hapi = require('hapi');
+const { graphqlHapi, graphiqlHapi } = require('apollo-server-hapi');
+const DataLoader = require('dataloader');
 
 async function start() {
   const server = new Hapi.Server({
     port: process.env.PORT || 9090,
     // compression: { minBytes: 1 }
-  })
+  });
 
   await server.register({
     plugin: graphqlHapi,
     options: {
       path: '/graphql',
-      graphqlOptions: (request) => ({
+      graphqlOptions: request => ({
         schema: require('./schema'),
         context: {
-          loaders: require('./loaders')()
-        }
+          loaders: require('./loaders')(),
+        },
       }),
       route: {
-        cors: true
-      }
-    }
-  })
+        cors: true,
+      },
+    },
+  });
 
   await server.register({
     plugin: graphiqlHapi,
     options: {
       path: '/graphiql',
-      graphiqlOptions: (request) => {
-        return ({
+      graphiqlOptions: request => {
+        return {
           schema: require('./schema'),
           context: {
-            loaders: require('./loaders')()
+            loaders: require('./loaders')(),
           },
-          endpointURL: './graphql'
-        })
+          endpointURL: './graphql',
+        };
       },
       route: {
-        cors: true
-      }
-    }
-  })
+        cors: true,
+      },
+    },
+  });
 
-  server.route(require('./routes'))
+  server.route(require('./routes'));
 
-  await server.start()
+  await server.start();
 
-  console.log('Started server', server.info)
+  console.log('Started server', server.info);
 }
 
-start()
+start();

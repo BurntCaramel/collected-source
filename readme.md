@@ -1,13 +1,14 @@
 # Source content
 
-- Trello board
-- GitHub repo
+* Trello board
+* GitHub repo
 
 ## Usage
 
 ### GraphQL End-point
-- API: `https://1.source.collected.design/graphql`
-- Interactive: `https://1.source.collected.design/graphiql`
+
+* API: `https://1.source.collected.design/graphql`
+* Interactive: `https://1.source.collected.design/graphiql`
 
 ### GitHub: All files in the RoyalIcing/lofi-bootstrap repo
 
@@ -26,14 +27,14 @@ gitHubRepo(owner: "RoyalIcing", repoName: "lofi-bootstrap") {
 ```graphql
 query Trello {
   trelloBoard(id: "580710faeb62c4f7a6fa7786") {
-    name,
-    id,
+    name
+    id
     lists {
-      id,
-      name,
+      id
+      name
       cards {
-        id,
-        name,
+        id
+        name
         desc
       }
     }
@@ -50,10 +51,10 @@ query Trello {
     stripe: list(name: "Stripe") {
       name
       pages: cards(tags: ["page"]) {
-        name,
+        name
         body: desc {
           headings {
-            text,
+            text
             level
           }
         }
@@ -67,7 +68,7 @@ query Trello {
 
 ### AWS Lambda with Apex Up
 
-1. [Install Up](https://github.com/apex/up/issues#quick-start)
+1.  [Install Up](https://github.com/apex/up/issues#quick-start)
 
 #### Staging
 

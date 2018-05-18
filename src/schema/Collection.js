@@ -1,5 +1,5 @@
-const R = require('ramda')
-const { listTags, stripTags } = require('../utils/tags')
+const R = require('ramda');
+const { listTags, stripTags } = require('../utils/tags');
 
 const typeDefs = `
 type Unit {
@@ -13,39 +13,38 @@ type Collection {
   value(key: String!): String
   units(tags: [String!]): [Unit!]
 }
-`
+`;
 
 const rootQueryFields = `
-`
+`;
 
 const resolvers = {
   Unit: {
     tags({ tags, name }) {
       if (tags) {
-        return tags
+        return tags;
       }
 
-      return listTags(name)
-    }
+      return listTags(name);
+    },
   },
   Collection: {
     value({ values }, { key }) {
-      return !!values ? values[key] : null
+      return !!values ? values[key] : null;
     },
     async units(object, query, context) {
       if (object.resolveUnits) {
-        return await object.resolveUnits(object, query, context)
+        return await object.resolveUnits(object, query, context);
       }
-    }
+    },
   },
-}
+};
 
-const rootQueryResolvers = {
-}
+const rootQueryResolvers = {};
 
 module.exports = {
   typeDefs,
   rootQueryFields,
   resolvers,
-  rootQueryResolvers
-}
+  rootQueryResolvers,
+};

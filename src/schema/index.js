@@ -1,11 +1,11 @@
-const { makeExecutableSchema } = require('graphql-tools')
-const Common = require('./Common')
-const Collection = require('./Collection')
-const JavaScript = require('./JavaScript')
-const GitHub = require('./GitHub')
-const Trello = require('./Trello')
-const Components = require('./Components')
-const NPM = require('./NPM')
+const { makeExecutableSchema } = require('graphql-tools');
+const Common = require('./Common');
+const Collection = require('./Collection');
+const JavaScript = require('./JavaScript');
+const GitHub = require('./GitHub');
+const Trello = require('./Trello');
+const Components = require('./Components');
+const NPM = require('./NPM');
 
 const baseTypeDefs = `
 type Query {
@@ -21,7 +21,7 @@ type Query {
 schema {
   query: Query
 }
-`
+`;
 
 const typeDefs = [
   Common.typeDefs,
@@ -31,20 +31,21 @@ const typeDefs = [
   Trello.typeDefs,
   Components.typeDefs,
   NPM.typeDefs,
-  baseTypeDefs
-]
+  baseTypeDefs,
+];
 
 const resolvers = Object.assign(
   {
-    Query: Object.assign({},
+    Query: Object.assign(
+      {},
       Common.rootQueryResolvers,
       Collection.rootQueryResolvers,
       JavaScript.rootQueryResolvers,
       GitHub.rootQueryResolvers,
       Trello.rootQueryResolvers,
       Components.rootQueryResolvers,
-      NPM.rootQueryResolvers,
-    )
+      NPM.rootQueryResolvers
+    ),
   },
   Common.resolvers,
   Collection.resolvers,
@@ -52,12 +53,12 @@ const resolvers = Object.assign(
   GitHub.resolvers,
   Trello.resolvers,
   Components.resolvers,
-  NPM.resolvers,
-)
+  NPM.resolvers
+);
 
 const schema = makeExecutableSchema({
   typeDefs,
-  resolvers
-})
+  resolvers,
+});
 
-module.exports = schema
+module.exports = schema;

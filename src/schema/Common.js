@@ -1,7 +1,12 @@
-const R = require('ramda')
-const Trello = require('../services/Trello')
-const { listTags, stripTags } = require('../utils/tags')
-const { listHeadings, listListItems, extractFrontmatter, stripFrontmatter } = require('../utils/markdown')
+const R = require('ramda');
+const Trello = require('../services/Trello');
+const { listTags, stripTags } = require('../utils/tags');
+const {
+  listHeadings,
+  listListItems,
+  extractFrontmatter,
+  stripFrontmatter,
+} = require('../utils/markdown');
 
 const typeDefs = `
 type TaggedStringTransformer {
@@ -34,63 +39,58 @@ type ListItem {
 type MarkdownFrontmatter {
   value(key: String!): String
 }
-`
+`;
 
 const rootQueryFields = `
-`
+`;
 
 const resolvers = {
   TaggedStringTransformer: {
     raw(string) {
-      return string
+      return string;
     },
     text(string) {
-      return stripTags(string).trim()
+      return stripTags(string).trim();
     },
     tags(string) {
-      return listTags(string)
-    }
+      return listTags(string);
+    },
   },
   MarkdownDocumentTransformer: {
     source(string) {
-      return string
+      return string;
     },
     sections(string) {
-      return R.pipe(
-        stripFrontmatter,
-        R.split(/^[-\*]{3,}\s*/m)
-      )(string)
+      return R.pipe(stripFrontmatter, R.split(/^[-\*]{3,}\s*/m))(string);
     },
     frontmatter(string) {
-      return extractFrontmatter(string)
-    }
+      return extractFrontmatter(string);
+    },
   },
   MarkdownSectionTransformer: {
     source(string) {
-      return string
+      return string;
     },
     headings(string) {
-      return listHeadings(string)
+      return listHeadings(string);
     },
     listItems(string) {
-      return listListItems(string)
-    }
+      return listListItems(string);
+    },
   },
-  Heading: {
-  },
+  Heading: {},
   MarkdownFrontmatter: {
     value(pairs, { key }) {
-      return pairs[key]
-    }
-  }
-}
+      return pairs[key];
+    },
+  },
+};
 
-const rootQueryResolvers = {
-}
+const rootQueryResolvers = {};
 
 module.exports = {
   typeDefs,
   rootQueryFields,
   resolvers,
-  rootQueryResolvers
-}
+  rootQueryResolvers,
+};

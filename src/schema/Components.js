@@ -1,4 +1,4 @@
-const GitHub = require('../services/GitHub')
+const GitHub = require('../services/GitHub');
 
 const typeDefs = `
 enum Prominence {
@@ -24,59 +24,58 @@ input InputElement {
   text: String
   children: [InputElement]
 }
-`
+`;
 
 const rootQueryFields = `
   renderBlah: String
 
   renderHTML(text: String, transforms: [Transform], elements: [InputElement]): String
-`
+`;
 
 const resolvers = {
-  Element: {
-  },
-}
+  Element: {},
+};
 
 function htmlElement({ text = '', prominence = null, children = [] }) {
-  let tagName = 'p'
+  let tagName = 'p';
   if (prominence === 'PRIMARY') {
-    tagName = 'h1'
+    tagName = 'h1';
   }
 
-  return `<${tagName}>${text}${children.map(htmlElement).join('\n')}</${tagName}>`
+  return `<${tagName}>${text}${children
+    .map(htmlElement)
+    .join('\n')}</${tagName}>`;
 }
 
 function applyTransforms(items, transforms) {
   transforms.forEach(transform => {
     if (transform === 'REVERSE') {
-      items = items.concat().reverse()
+      items = items.concat().reverse();
+    } else if (transform === 'UPPERCASE') {
+      items = items.map(s => s.toUpperCase());
+    } else if (transform === 'LOWERCASE') {
+      items = items.map(s => s.toLowerCase());
     }
-    else if (transform === 'UPPERCASE') {
-      items = items.map(s => s.toUpperCase())
-    }
-    else if (transform === 'LOWERCASE') {
-      items = items.map(s => s.toLowerCase())
-    }
-  })
+  });
 
-  return items
+  return items;
 }
 
 const rootQueryResolvers = {
   renderHTML(_, { text = '', transforms = [], elements = [] }) {
-    let items = elements.map(htmlElement)
-    items = applyTransforms(items, transforms)
-    return items.join('\n')
+    let items = elements.map(htmlElement);
+    items = applyTransforms(items, transforms);
+    return items.join('\n');
   },
 
   renderBlah(_, { element }) {
-    return '<p>Blah</p>'
-  }
-}
+    return '<p>Blah</p>';
+  },
+};
 
 module.exports = {
   typeDefs,
   rootQueryFields,
   resolvers,
-  rootQueryResolvers
-}
+  rootQueryResolvers,
+};

@@ -24,13 +24,15 @@
   "devDependencies": {
     "ava": "^0.25.0",
     "dotenv": "^5.0.1",
-    "nodemon": "^1.15.1"
+    "nodemon": "^1.15.1",
+    "prettier": "^1.12.1"
   },
   "scripts": {
     "dev": "NODE_ENV=development nodemon src/server.js",
     "start": "NODE_ENV=production node src/server.js",
     "test": "ava ./src/**/*.test.js",
     "deploy:staging": "yarn && yarn test && up",
-    "deploy:prod": "yarn && yarn test && up deploy production"
+    "deploy:prod": "yarn && yarn test && up deploy production",
+    "format": "prettier --write '**/*.{js,md}'"
   }
 }
