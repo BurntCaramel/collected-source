@@ -34,5 +34,9 @@
     "deploy:staging": "yarn && yarn test && up",
     "deploy:prod": "yarn && yarn test && up deploy production",
     "format": "prettier --write '**/*.{js,md}'"
+  },
+  "engines": {
+    "node": "8.x",
+    "yarn": ">=1.0.0 <2.0.0"
   }
 }
