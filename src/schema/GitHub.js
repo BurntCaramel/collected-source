@@ -1,8 +1,7 @@
-const { makeExecutableSchema } = require('graphql-tools')
 const R = require('ramda')
 const mm = require('micromatch')
 const GitHub = require('../services/GitHub')
-const { listDependenciesInPackageJSONContent } = require('../utils/dependencies')
+const { pathIsPackageJSON, listDependenciesInPackageJSONContent } = require('../utils/dependencies')
 
 const typeDefs = `
 type GitHubRepo {
@@ -11,6 +10,7 @@ type GitHubRepo {
   ref: String
   files(pathPrefixes: [String], pathMatching: [String], pathNotMatching: [String]): [GitHubFile]
   dependencies: GitHubDependencies
+  npmProjects: [NPMProject!]
 }
 
 type GitHubDependencies {
@@ -77,13 +77,40 @@ const resolvers = {
     async dependencies(
       { owner, repoName, ref }
     ) {
-      const files = await GitHub.listFiles({
+      const files = await loaders.gitHubRepoListFiles.load({
         owner,
         repoName,
         ref,
         includeContent: true
       })
       return { files }
+    },
+    async npmProjects(
+      { owner, repoName, ref },
+      _args,
+      { loaders }
+    ) {
+      const files = await loaders.gitHubRepoListFiles.load({
+        owner,
+        repoName,
+        ref,
+        includeContent: true
+      })
+
+      return R.pipe(
+        R.filter(({ path }) => {
+          return pathIsPackageJSON(path)
+        }),
+        R.map((file) => {
+          console.log('package json', file.path)
+          const packageJSON = JSON.parse(file.content)
+          return {
+            allFiles: files,
+            packageJSONFile: file,
+            packageJSON
+          }
+        })
+      )(files)
     }
   },
   GitHubDependencies: {
@@ -94,18 +121,28 @@ const resolvers = {
     ) {
       const fromPackageJSON = R.pipe(
         R.filter(({ path }) => {
-          return /(^|\/)package.json$/.test(path)
+          return pathIsPackageJSON(path)
         }),
         R.tap(files => console.log('package.json files', files)),
         R.map((file) => {
           return {
-            file,
-            items: listDependenciesInPackageJSONContent(file.content)
+            file
           }
         })
       )(files)
 
       return fromPackageJSON
+    }
+  },
+  GitHubDependencySource: {
+    async items(
+      { file }
+    ) {
+      if (pathIsPackageJSON(file.path)) {
+        return listDependenciesInPackageJSONContent(file.content)
+      }
+
+      return []
     }
   },
   GitHubFile: {

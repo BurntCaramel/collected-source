@@ -1,4 +1,3 @@
-const { makeExecutableSchema } = require('graphql-tools')
 const R = require('ramda')
 const babel = require('babel-core')
 const babylon = require('babylon')

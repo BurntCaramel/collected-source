@@ -5,6 +5,7 @@ const JavaScript = require('./JavaScript')
 const GitHub = require('./GitHub')
 const Trello = require('./Trello')
 const Components = require('./Components')
+const NPM = require('./NPM')
 
 const baseTypeDefs = `
 type Query {
@@ -14,6 +15,7 @@ type Query {
   ${GitHub.rootQueryFields}
   ${Trello.rootQueryFields}
   ${Components.rootQueryFields}
+  ${NPM.rootQueryFields}
 }
 
 schema {
@@ -28,6 +30,7 @@ const typeDefs = [
   GitHub.typeDefs,
   Trello.typeDefs,
   Components.typeDefs,
+  NPM.typeDefs,
   baseTypeDefs
 ]
 
@@ -39,7 +42,8 @@ const resolvers = Object.assign(
       JavaScript.rootQueryResolvers,
       GitHub.rootQueryResolvers,
       Trello.rootQueryResolvers,
-      Components.rootQueryResolvers
+      Components.rootQueryResolvers,
+      NPM.rootQueryResolvers,
     )
   },
   Common.resolvers,
@@ -48,6 +52,7 @@ const resolvers = Object.assign(
   GitHub.resolvers,
   Trello.resolvers,
   Components.resolvers,
+  NPM.resolvers,
 )
 
 const schema = makeExecutableSchema({

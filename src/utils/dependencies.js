@@ -1,5 +1,9 @@
 const R = require('ramda')
 
+const packageJSONPathRegex = /(^|\/)package.json$/
+
+const pathIsPackageJSON = R.test(packageJSONPathRegex)
+
 const listDependenciesInPackageJSONContent = R.tryCatch((content) => {
   const json = JSON.parse(content)
   const dependencies = R.pipe(
@@ -22,5 +26,6 @@ const listDependenciesInPackageJSONContent = R.tryCatch((content) => {
 }, R.always(null))
 
 module.exports = {
+  pathIsPackageJSON,
   listDependenciesInPackageJSONContent,
 }

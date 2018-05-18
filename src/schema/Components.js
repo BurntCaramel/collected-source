@@ -1,4 +1,3 @@
-const { makeExecutableSchema } = require('graphql-tools')
 const GitHub = require('../services/GitHub')
 
 const typeDefs = `
