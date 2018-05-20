@@ -23,7 +23,10 @@ yep yep
 
 test('listListItems()', t => {
   t.deepEqual(
-    [{ content: 'first', childItems: [] }, { content: 'second', childItems: [] }],
+    [
+      { content: 'first', childItems: [] },
+      { content: 'second', childItems: [] },
+    ],
     listListItems(`
 blah de blah
 
@@ -39,27 +42,42 @@ yep yep
 });
 
 test('listListItems() with nothing', t => {
-  t.deepEqual(
-    [],
-    listListItems('')
-  );
+  t.deepEqual([], listListItems(''));
 });
 
 test('listListItems() with nested items', t => {
   t.deepEqual(
-    [{ content: 'first', childItems: [
-      { content: 'a', childItems: [] },
-      { content: 'b', childItems: [
-        { content: 'c', childItems: [
-          { content: '', childItems: [
-            { content: 'whoa', childItems: [] }
-          ]}
-        ] }
-      ] },
-      { content: 'd', childItems: [] }
-    ] }, { content: 'second', childItems: [
-      { content: 'e', childItems: [] }
-    ] }],
+    [
+      {
+        content: 'first',
+        childItems: [
+          { content: 'a', childItems: [] },
+          {
+            content: 'b',
+            childItems: [
+              {
+                content: 'c',
+                childItems: [
+                  {
+                    content: '',
+                    childItems: [{ content: 'whoa', childItems: [] }],
+                  },
+                ],
+              },
+            ],
+          },
+          { content: 'd', childItems: [] },
+        ],
+      },
+      {
+        content: 'second',
+        childItems: [{ content: 'e', childItems: [] }],
+      },
+      {
+        content: 'third',
+        childItems: [{ content: 'f', childItems: [] }],
+      },
+    ],
     listListItems(`
 - first
   - a
@@ -67,8 +85,10 @@ test('listListItems() with nested items', t => {
     - c
         - whoa
   - d 
-- second    
-  - e
++ second    
+  + e
+* third
+  * f
 
 yep yep
 `)

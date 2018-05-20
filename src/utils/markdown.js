@@ -37,33 +37,37 @@ const listListItems = R.pipe(
   stripFrontmatter,
   R.match(listItemRegex),
   R.reduce((items = [], input) => {
-    input = input.replace('\n', '')
-    const [ indentWhitespace, ...rest ] = input.split('-')
-    const content = R.pipe(R.join('-'), R.trim)(rest)
-    const level = indentWhitespace.replace(/\s\s/g, ' ').replace(/\t/, ' ').length
+    input = input.replace('\n', '');
+    const indentWhitespace = input.split(/[-+*]/)[0];
+    const content = R.pipe(
+      R.slice(indentWhitespace.length + 1, Infinity),
+      R.trim
+    )(input);
+    const level = indentWhitespace.replace(/\s\s/g, ' ').replace(/\t/, ' ')
+      .length;
 
     const newItem = {
       content,
-      childItems: []
-    }
+      childItems: [],
+    };
 
-    let targetedItems = items
-    let i = level
+    let targetedItems = items;
+    let i = level;
     while (i > 0) {
-      let nextItem = targetedItems[targetedItems.length - 1]
+      let nextItem = targetedItems[targetedItems.length - 1];
       if (!nextItem) {
-        nextItem = { content: '', childItems: []}
-        targetedItems.push(nextItem)
+        nextItem = { content: '', childItems: [] };
+        targetedItems.push(nextItem);
       }
-      targetedItems = nextItem.childItems
-      i -= 1
+      targetedItems = nextItem.childItems;
+      i -= 1;
     }
 
-    targetedItems.push(newItem)
+    targetedItems.push(newItem);
 
-    return items
+    return items;
   }, undefined),
-  R.defaultTo([]),
+  R.defaultTo([])
 );
 
 module.exports = {
