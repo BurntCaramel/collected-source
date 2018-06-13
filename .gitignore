@@ -64,3 +64,4 @@ node-v8.*/**
 
 # Production app engine config
 app.*.yaml
+/.envrc
